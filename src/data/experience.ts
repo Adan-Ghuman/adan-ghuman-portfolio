@@ -1,0 +1,91 @@
+import type {Experience} from "@/types";
+
+import systemsLogo from "@/assets/images/systems.png";
+import fabtechsolLogo from "@/assets/images/FabTechSol.png";
+import karigarLogo from "@/assets/images/karigar.png";
+
+export const experiences: Experience[] = [
+  {
+    id: "systems-limited",
+    role: "Intern",
+    company: "Systems Limited",
+    type: "Internship",
+    startDate: "Sep 2025",
+    endDate: "Dec 2025",
+    duration: "4 months",
+    location: "Karachi, Sindh, Pakistan",
+    locationType: "On-site",
+    bullets: [
+      "Trained primarily in frontend engineering, with strong emphasis on fundamentals, component architecture, and performance-aware rendering.",
+      "Translated Figma designs into pixel-perfect, production-ready UI, following enterprise-level standards.",
+      "Gained backend exposure by developing APIs to support frontend features, and by understanding how frontend applications integrate with backend systems through well-defined request–response flows.",
+      "Developed a clearer system-level mindset writing frontend code that is scalable, maintainable, and backend-friendly.",
+    ],
+    skills: [
+      "React.js",
+      "Tailwind CSS",
+      "TypeScript",
+      "REST APIs",
+      "Component Architecture",
+      "Performance Optimization",
+      "Git",
+      "Node.js",
+      "Express.js",
+    ],
+    logo: systemsLogo,
+  },
+  {
+    id: "fabtechsol",
+    role: "MERN Stack Developer Intern",
+    company: "Fabulous Technology Solutions (Fabtechsol)",
+    type: "Full-time",
+    startDate: "Apr 2025",
+    endDate: "Jun 2025",
+    duration: "3 mos",
+    location: "Sialkot, Punjab, Pakistan",
+    locationType: "On-site",
+    bullets: [
+      "Contributed to the development of web applications using MERN stack.",
+      "Implemented responsive UI components with React and Bootstrap for better user experience.",
+      "Worked on RESTful APIs for CRUD operations and integrated frontend with backend services.",
+      "Gained hands-on experience in Git/GitHub for version control.",
+      "Collaborated with senior developers to debug, optimize performance, and follow best coding practices.",
+    ],
+    skills: [
+      "MongoDB",
+      "Express.js",
+      "React.js",
+      "Node.js",
+      "REST APIs",
+      "Bootstrap",
+      "Git",
+      "GitHub",
+    ],
+    logo: fabtechsolLogo,
+  },
+  {
+    id: "karigar",
+    role: "Bidder",
+    company: "Karigar Web Solutions",
+    type: "Part-time",
+    startDate: "Dec 2022",
+    endDate: "Sep 2023",
+    duration: "10 mos",
+    location: "Sialkot, Punjab, Pakistan",
+    locationType: "Remote",
+    bullets: [
+      "Researched and identified potential software development opportunities across freelancing platforms.",
+      "Created compelling and tailored proposals to secure client projects with high conversion rates.",
+      "Strategically placed bids on platforms to maximize success rates.",
+    ],
+    skills: [
+      "Project Hunting",
+      "Competitive Analysis",
+      "Proposal Writing",
+      "Bid Management",
+      "Client Communication",
+      "Market Research",
+    ],
+    logo: karigarLogo,
+  },
+];

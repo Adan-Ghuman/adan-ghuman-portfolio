@@ -232,7 +232,7 @@ export function Navbar() {
             </nav>
 
             {/* Mobile bottom tab bar */}
-            <nav className="fixed bottom-0 inset-x-0 z-50 md:hidden border-t backdrop-blur-xl bg-glass border-border">
+            <nav className="fixed bottom-4 left-3 right-3 z-50 md:hidden border backdrop-blur-xl bg-glass border-border rounded-2xl shadow-xl shadow-black/30 overflow-hidden">
                 <div
                     ref={bottomNavRef}
                     className="relative flex items-center h-16 px-2"

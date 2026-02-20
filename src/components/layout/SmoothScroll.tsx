@@ -18,11 +18,12 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
 
     useEffect(() => {
         const lenis = new Lenis({
-            duration: 0.65,
+            duration: 0.8,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            touchMultiplier: 1.5,
+            touchMultiplier: 2.0,
             wheelMultiplier: 1.0,
             infinite: false,
+            syncTouch: true,
         });
 
         lenisRef.current = lenis;
@@ -34,7 +35,6 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
             lenis.raf(time * 1000);
         };
         gsap.ticker.add(tickerCallback);
-        gsap.ticker.lagSmoothing(0);
 
         return () => {
             gsap.ticker.remove(tickerCallback);

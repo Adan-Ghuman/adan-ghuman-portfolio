@@ -24,7 +24,7 @@ export function Footer() {
     ];
 
     return (
-        <footer className="pt-6 pb-16 md:pb-6 border-t border-border bg-bg-base text-text-primary transition-colors duration-300">
+        <footer className="hidden md:block pt-6 pb-6 border-t border-border bg-bg-base text-text-primary transition-colors duration-300">
             <div className="max-w-[88%] mx-auto flex items-center justify-between gap-4">
                 <div className="flex items-center">
                     <img

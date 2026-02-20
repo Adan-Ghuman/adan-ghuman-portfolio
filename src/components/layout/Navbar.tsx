@@ -171,7 +171,9 @@ export function Navbar() {
                             className="rounded-full w-10 h-10 px-0 text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
                             aria-label="Toggle theme"
                         >
-                            {theme === 'dark' ? <Sun className="h-4.5 w-4.5" /> : <Moon className="h-4.5 w-4.5" />}
+                            {theme === 'dark'
+                                ? <Sun key="sun" className="h-4.5 w-4.5 theme-icon" />
+                                : <Moon key="moon" className="h-4.5 w-4.5 theme-icon" />}
                         </Button>
 
                         {/* Desktop: direct download */}

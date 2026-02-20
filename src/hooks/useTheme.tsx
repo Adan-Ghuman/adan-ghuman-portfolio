@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = 'portfolio-theme-v1';
 
-const THEME_TRANSITION_MS = 500;
+const THEME_TRANSITION_MS = 200;
 
 export function ThemeProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
     const [theme, setTheme] = useState<Theme>(() => {

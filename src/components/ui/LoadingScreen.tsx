@@ -127,27 +127,24 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     const exitingRef = useRef(false);
     const startTime = useRef(Date.now());
 
-    const themeRef = useRef<Palette>({
-        bg: "#050505",
-        line: [163, 217, 68],
-        glow: [192, 255, 64],
-        text: "#ffffff"
-    });
-
-    useEffect(() => {
+    // Read palette synchronously from the DOM — the inline script in index.html
+    // guarantees the correct dark/light class is already on <html> before React renders.
+    const themeRef = useRef<Palette | null>(null);
+    if (themeRef.current === null) {
+        const isDark = !document.documentElement.classList.contains("light");
         const styles = getComputedStyle(document.documentElement);
-        const isDark = document.documentElement.classList.contains("dark");
-        const bgBase = styles.getPropertyValue('--color-bg-base').trim();
-        const colorPrimary = styles.getPropertyValue('--color-primary').trim();
+        const bgBase = styles.getPropertyValue("--color-bg-base").trim();
+        const colorPrimary = styles.getPropertyValue("--color-primary").trim();
         const primaryRGB = parseColor(colorPrimary || (isDark ? "#c0ff40" : "#a3d944"));
-
         themeRef.current = {
             bg: bgBase || (isDark ? "#050505" : "#f9fafb"),
             line: primaryRGB,
             glow: primaryRGB,
             text: colorPrimary || (isDark ? "#c0ff40" : "#a3d944"),
         };
+    }
 
+    useEffect(() => {
         const mark = () => { loadedRef.current = true; };
         if (document.readyState === "complete") setTimeout(mark, 1000);
         else window.addEventListener("load", () => setTimeout(mark, 500));
@@ -201,7 +198,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
 
         const animate = () => {
             frame++;
-            const { bg, line, glow } = themeRef.current;
+            const { bg, line, glow } = themeRef.current!;
             const [lr, lg, lb] = line;
             const [gr, gg, gb] = glow;
 
@@ -341,14 +338,16 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         };
     }, [startExit]);
 
-    const { text, glow } = themeRef.current;
+    // themeRef is always non-null after the lazy-init above
+    const palette = themeRef.current!;
+    const { text, glow } = palette;
     const [gr, gg, gb] = glow;
 
     return (
         <div
             className="fixed inset-0 z-9999 flex flex-col items-center justify-center overflow-hidden transition-all duration-1000 ease-in-out"
             style={{
-                backgroundColor: themeRef.current.bg,
+                backgroundColor: palette.bg,
                 opacity: exiting ? 0 : 1,
                 transform: exiting ? "scale(2.5)" : "scale(1)",
                 filter: exiting ? "blur(10px)" : "blur(0px)",

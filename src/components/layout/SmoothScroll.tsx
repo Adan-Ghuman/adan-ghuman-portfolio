@@ -20,10 +20,10 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
         const lenis = new Lenis({
             duration: 0.8,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            touchMultiplier: 2.0,
+            touchMultiplier: 1.0,
             wheelMultiplier: 1.0,
             infinite: false,
-            syncTouch: true,
+            syncTouch: false,
         });
 
         lenisRef.current = lenis;

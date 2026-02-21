@@ -104,16 +104,26 @@
 }
 
 .theme-transitioning,
-.theme-transitioning *,
-.theme-transitioning *::before,
-.theme-transitioning *::after {
+.theme-transitioning div,
+.theme-transitioning section,
+.theme-transitioning nav,
+.theme-transitioning header,
+.theme-transitioning footer,
+.theme-transitioning main,
+.theme-transitioning p,
+.theme-transitioning span,
+.theme-transitioning a,
+.theme-transitioning button,
+.theme-transitioning h1,
+.theme-transitioning h2,
+.theme-transitioning h3,
+.theme-transitioning h4,
+.theme-transitioning li {
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    fill 0.2s ease,
-    stroke 0.2s ease !important;
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease !important;
 }
 
 html {

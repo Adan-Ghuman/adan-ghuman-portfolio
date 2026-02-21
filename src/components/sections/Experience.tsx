@@ -172,6 +172,8 @@ export const Experience = memo(function Experience() {
     useGsap(
         containerRef,
         () => {
+            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
             // ── Timeline line ──────────────────────────────────────────
             if (lineRef.current) {
                 gsap.fromTo(
@@ -192,74 +194,109 @@ export const Experience = memo(function Experience() {
                 );
             }
 
-            // ── Dots — single ScrollTrigger per dot, no delay prop ────
-            const dots = gsap.utils.toArray<HTMLElement>(".experience-dot");
-            dots.forEach((dot) => {
+            if (isDesktop) {
+                // ── Dots (desktop only — each dot has its own trigger) ─
+                const dots = gsap.utils.toArray<HTMLElement>(".experience-dot");
+                dots.forEach((dot) => {
+                    gsap.fromTo(
+                        dot,
+                        { scale: 0, opacity: 0 },
+                        {
+                            scale: 1,
+                            opacity: 1,
+                            duration: 0.5,
+                            ease: "back.out(2.5)",
+                            force3D: true,
+                            overwrite: "auto",
+                            scrollTrigger: {
+                                trigger: dot,
+                                start: "top 82%",
+                                toggleActions: "play none none none",
+                                fastScrollEnd: true,
+                            },
+                        },
+                    );
+                });
+
+                // ── Branches ──────────────────────────────────────────
+                const branches = gsap.utils.toArray<HTMLElement>(".experience-branch");
+                branches.forEach((branch) => {
+                    gsap.fromTo(
+                        branch,
+                        { scaleX: 0, transformOrigin: "left center" },
+                        {
+                            scaleX: 1,
+                            duration: 0.45,
+                            ease: "power2.out",
+                            force3D: true,
+                            overwrite: "auto",
+                            scrollTrigger: {
+                                trigger: branch,
+                                start: "top 82%",
+                                toggleActions: "play none none none",
+                                fastScrollEnd: true,
+                            },
+                        },
+                    );
+                });
+
+                // ── Cards (desktop: slide in from side) ───────────────
+                const cards = gsap.utils.toArray<HTMLElement>(".experience-card");
+                cards.forEach((card) => {
+                    const side = card.getAttribute("data-side");
+                    gsap.fromTo(
+                        card,
+                        { x: side === "left" ? -50 : 50, opacity: 0 },
+                        {
+                            x: 0,
+                            opacity: 1,
+                            duration: 0.7,
+                            ease: "power3.out",
+                            force3D: true,
+                            overwrite: "auto",
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 88%",
+                                toggleActions: "play none none none",
+                                fastScrollEnd: true,
+                            },
+                        },
+                    );
+                });
+            } else {
+                // ── Mobile: one batched ScrollTrigger per card, simple fade ─
+                const dots = gsap.utils.toArray<HTMLElement>(".experience-dot");
                 gsap.fromTo(
-                    dot,
+                    dots,
                     { scale: 0, opacity: 0 },
                     {
-                        scale: 1,
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: "back.out(2.5)",
-                        force3D: true,
-                        overwrite: "auto",
+                        scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)",
+                        stagger: 0.06, force3D: true, overwrite: "auto",
                         scrollTrigger: {
-                            trigger: dot,
-                            start: "top 82%",
+                            trigger: containerRef.current,
+                            start: "top 70%",
                             toggleActions: "play none none none",
-                            fastScrollEnd: true,
                         },
                     },
                 );
-            });
 
-            // ── Branches ──────────────────────────────────────────────
-            const branches = gsap.utils.toArray<HTMLElement>(".experience-branch");
-            branches.forEach((branch) => {
-                gsap.fromTo(
-                    branch,
-                    { scaleX: 0, transformOrigin: "left center" },
-                    {
-                        scaleX: 1,
-                        duration: 0.45,
-                        ease: "power2.out",
-                        force3D: true,
-                        overwrite: "auto",
-                        scrollTrigger: {
-                            trigger: branch,
-                            start: "top 82%",
-                            toggleActions: "play none none none",
-                            fastScrollEnd: true,
+                const cards = gsap.utils.toArray<HTMLElement>(".experience-card");
+                cards.forEach((card) => {
+                    gsap.fromTo(
+                        card,
+                        { opacity: 0, y: 16 },
+                        {
+                            opacity: 1, y: 0, duration: 0.45, ease: "power2.out",
+                            force3D: true, overwrite: "auto",
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 92%",
+                                toggleActions: "play none none none",
+                            },
                         },
-                    },
-                );
-            });
-
-            // ── Cards ─────────────────────────────────────────────────
-            const cards = gsap.utils.toArray<HTMLElement>(".experience-card");
-            cards.forEach((card) => {
-                const side = card.getAttribute("data-side");
-                gsap.fromTo(
-                    card,
-                    { x: side === "left" ? -50 : 50, opacity: 0 },
-                    {
-                        x: 0,
-                        opacity: 1,
-                        duration: 0.7,
-                        ease: "power3.out",
-                        force3D: true,
-                        overwrite: "auto",
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top 88%",
-                            toggleActions: "play none none none",
-                            fastScrollEnd: true,
-                        },
-                    },
-                );
-            });
+                    );
+                });
+            }
         },
         [],
     );

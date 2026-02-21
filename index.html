@@ -23,6 +23,17 @@
       href="/images/logo-portfolio.png"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Inline theme script: runs synchronously before React so <html> already
+         has the correct dark/light class when the loading screen canvas first paints.
+         Prevents FOUC and ensures LoadingScreen reads the right CSS variables. -->
+    <script>
+      try {
+        var t = localStorage.getItem('portfolio-theme-v1');
+        document.documentElement.classList.add(t === 'light' ? 'light' : 'dark');
+      } catch (e) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
     <title>M. Adan Ghuman — Software Engineer</title>
     <meta
       name="description"

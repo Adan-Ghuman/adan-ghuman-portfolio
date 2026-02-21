@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = 'portfolio-theme-v1';
 
-const THEME_TRANSITION_MS = 200;
+const THEME_TRANSITION_MS = 150;
 
 export function ThemeProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
     const [theme, setTheme] = useState<Theme>(() => {
@@ -31,7 +31,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }): Reac
 
     useEffect(() => {
         const root = window.document.documentElement;
-        root.classList.remove('light', 'dark');
+        // Atomic swap: remove only the other class so there is never a frame
+        // where neither class is present (which would cause a flash).
+        const other = theme === 'dark' ? 'light' : 'dark';
+        root.classList.remove(other);
         root.classList.add(theme);
         try {
             localStorage.setItem(THEME_STORAGE_KEY, theme);

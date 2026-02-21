@@ -27,26 +27,33 @@ const technologies = [
 
 // ------------------------------------------------------------------
 // Mobile infinite-scroll carousel with touch-to-pause behaviour
+// Uses translateX (compositor-only) instead of scrollLeft so iOS
+// never blocks the animation during touch gestures.
 // ------------------------------------------------------------------
 const MobileCarousel = memo(function MobileCarousel() {
-    const items = [...technologies, ...technologies]; // duplicate for seamless loop
-    const containerRef = useRef<HTMLDivElement>(null);
+    // Triple the list so there is always overflow on both sides
+    const items = [...technologies, ...technologies, ...technologies];
+
+    const stripRef = useRef<HTMLDivElement>(null);
     const rafRef = useRef<number | null>(null);
     const resumeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const isPausedRef = useRef(false);
+    const offsetRef = useRef(0);       // current translateX (negative = moved left)
+    const touchLastX = useRef(0);
 
-    const SPEED = 0.6; // px per frame
+    const SPEED = 0.7; // px per frame auto-scroll
 
     const tick = useCallback(() => {
-        const el = containerRef.current;
-        if (!el || isPausedRef.current) {
-            rafRef.current = requestAnimationFrame(tick);
-            return;
-        }
-        el.scrollLeft += SPEED;
-        // Seamless reset at the midpoint (one full copy of the list)
-        if (el.scrollLeft >= el.scrollWidth / 2) {
-            el.scrollLeft = 0;
+        const strip = stripRef.current;
+        if (strip) {
+            if (!isPausedRef.current) {
+                offsetRef.current -= SPEED;
+            }
+            // Seamless reset: one third of strips width = one full set
+            const singleSet = strip.scrollWidth / 3;
+            if (offsetRef.current <= -singleSet) offsetRef.current += singleSet;
+            else if (offsetRef.current > 0) offsetRef.current -= singleSet;
+            strip.style.transform = `translateX(${offsetRef.current}px)`;
         }
         rafRef.current = requestAnimationFrame(tick);
     }, []);
@@ -59,9 +66,16 @@ const MobileCarousel = memo(function MobileCarousel() {
         };
     }, [tick]);
 
-    const handleTouchStart = useCallback(() => {
+    const handleTouchStart = useCallback((e: React.TouchEvent) => {
         isPausedRef.current = true;
         if (resumeTimeout.current !== null) clearTimeout(resumeTimeout.current);
+        touchLastX.current = e.touches[0].clientX;
+    }, []);
+
+    const handleTouchMove = useCallback((e: React.TouchEvent) => {
+        const dx = e.touches[0].clientX - touchLastX.current;
+        offsetRef.current += dx;
+        touchLastX.current = e.touches[0].clientX;
     }, []);
 
     const handleTouchEnd = useCallback(() => {
@@ -72,33 +86,38 @@ const MobileCarousel = memo(function MobileCarousel() {
     }, []);
 
     return (
-        <div className="md:hidden relative">
+        <div className="md:hidden relative overflow-hidden py-2">
             {/* edge fade hints */}
             <div className="absolute left-0 top-0 bottom-0 w-8 bg-linear-to-r from-bg-base/80 to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-bg-base/80 to-transparent z-10 pointer-events-none" />
+
             <div
-                ref={containerRef}
-                className="overflow-x-auto flex gap-3 px-4 py-2 scrollbar-hide"
-                style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
                 onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
                 onTouchCancel={handleTouchEnd}
             >
-                {items.map((tech, index) => (
-                    <div
-                        key={`mob-${tech.name}-${index}`}
-                        className="shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl border border-border bg-surface w-18"
-                        style={{ boxShadow: `0 0 12px ${tech.brandColor === 'currentColor' ? 'transparent' : tech.brandColor}18` }}
-                    >
-                        <tech.Icon
-                            style={{ color: tech.brandColor === 'currentColor' ? undefined : tech.brandColor }}
-                            className={`w-8 h-8 shrink-0${tech.brandColor === 'currentColor' ? ' text-text-primary' : ''}`}
-                        />
-                        <span className="text-[9px] font-medium text-center leading-tight text-text-secondary w-full truncate">
-                            {tech.name}
-                        </span>
-                    </div>
-                ))}
+                <div
+                    ref={stripRef}
+                    className="flex gap-3 px-4 will-change-transform"
+                    style={{ transform: 'translateX(0px)' }}
+                >
+                    {items.map((tech, index) => (
+                        <div
+                            key={`mob-${tech.name}-${index}`}
+                            className="shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl border border-border bg-surface w-18"
+                            style={{ boxShadow: `0 0 12px ${tech.brandColor === 'currentColor' ? 'transparent' : tech.brandColor}18` }}
+                        >
+                            <tech.Icon
+                                style={{ color: tech.brandColor === 'currentColor' ? undefined : tech.brandColor }}
+                                className={`w-8 h-8 shrink-0${tech.brandColor === 'currentColor' ? ' text-text-primary' : ''}`}
+                            />
+                            <span className="text-[9px] font-medium text-center leading-tight text-text-secondary w-full truncate">
+                                {tech.name}
+                            </span>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

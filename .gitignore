@@ -1,16 +1,12 @@
 # Dependencies
 node_modules
-package-lock.json
-
-*.md
-!README.md
-
-.agents
 
 # Build output
 dist
 dist-ssr
-
+.agents
+*.md
+package-lock.json
 # Logs
 logs
 *.log
@@ -47,4 +43,3 @@ Desktop.ini
 
 # TypeScript cache
 *.tsbuildinfo
-

@@ -172,79 +172,90 @@ export const Experience = memo(function Experience() {
     useGsap(
         containerRef,
         () => {
+            // ── Timeline line ──────────────────────────────────────────
             if (lineRef.current) {
                 gsap.fromTo(
                     lineRef.current,
                     { scaleY: 0 },
                     {
                         scaleY: 1,
-                        duration: 1.5,
-                        ease: "power2.out",
+                        duration: 1.8,
+                        ease: "power2.inOut",
+                        force3D: true,
                         scrollTrigger: {
                             trigger: containerRef.current,
-                            start: "top 60%",
+                            start: "top 65%",
                             toggleActions: "play none none none",
+                            fastScrollEnd: true,
                         },
                     },
                 );
             }
 
+            // ── Dots — single ScrollTrigger per dot, no delay prop ────
             const dots = gsap.utils.toArray<HTMLElement>(".experience-dot");
-            dots.forEach((dot, i) => {
+            dots.forEach((dot) => {
                 gsap.fromTo(
                     dot,
                     { scale: 0, opacity: 0 },
                     {
                         scale: 1,
                         opacity: 1,
-                        duration: 0.4,
-                        ease: "back.out(2)",
+                        duration: 0.5,
+                        ease: "back.out(2.5)",
+                        force3D: true,
+                        overwrite: "auto",
                         scrollTrigger: {
                             trigger: dot,
-                            start: "top 80%",
+                            start: "top 82%",
                             toggleActions: "play none none none",
+                            fastScrollEnd: true,
                         },
-                        delay: i * 0.05,
                     },
                 );
             });
 
+            // ── Branches ──────────────────────────────────────────────
             const branches = gsap.utils.toArray<HTMLElement>(".experience-branch");
             branches.forEach((branch) => {
                 gsap.fromTo(
                     branch,
-                    { scaleX: 0 },
+                    { scaleX: 0, transformOrigin: "left center" },
                     {
                         scaleX: 1,
-                        duration: 0.4,
+                        duration: 0.45,
                         ease: "power2.out",
+                        force3D: true,
+                        overwrite: "auto",
                         scrollTrigger: {
                             trigger: branch,
-                            start: "top 80%",
+                            start: "top 82%",
                             toggleActions: "play none none none",
+                            fastScrollEnd: true,
                         },
                     },
                 );
             });
 
+            // ── Cards ─────────────────────────────────────────────────
             const cards = gsap.utils.toArray<HTMLElement>(".experience-card");
             cards.forEach((card) => {
                 const side = card.getAttribute("data-side");
                 gsap.fromTo(
                     card,
-                    {
-                        x: side === "left" ? -60 : 60,
-                        opacity: 0,
-                    },
+                    { x: side === "left" ? -50 : 50, opacity: 0 },
                     {
                         x: 0,
                         opacity: 1,
-                        duration: 0.8,
+                        duration: 0.7,
                         ease: "power3.out",
+                        force3D: true,
+                        overwrite: "auto",
                         scrollTrigger: {
                             trigger: card,
-                            start: "top 85%",
+                            start: "top 88%",
                             toggleActions: "play none none none",
+                            fastScrollEnd: true,
                         },
                     },
                 );
@@ -273,10 +284,9 @@ export const Experience = memo(function Experience() {
                     <div
                         ref={(el) => {
                             (lineRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-                            if (el) el.style.transform = "scaleY(0)";
                         }}
                         className={cn(
-                            "absolute top-0 bottom-0 w-0.5 bg-primary/30 origin-top",
+                            "absolute top-0 bottom-0 w-0.5 bg-primary/30 origin-top will-change-transform",
                             "left-1.75 md:left-1/2 md:-translate-x-1/2",
                         )}
                     />

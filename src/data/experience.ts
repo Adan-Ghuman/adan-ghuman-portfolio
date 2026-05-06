@@ -3,8 +3,40 @@ import type {Experience} from "@/types";
 import systemsLogo from "@/assets/images/systems.png";
 import fabtechsolLogo from "@/assets/images/FabTechSol.png";
 import karigarLogo from "@/assets/images/karigar.png";
+import sobyLogo from "@/assets/images/soby.png";
 
 export const experiences: Experience[] = [
+  {
+    id: "soby-agro-machinery",
+    role: "Full Stack Engineer",
+    company: "Soby Agro Machinery",
+    type: "Full-time",
+    startDate: "Jan 2026",
+    endDate: "Apr 2026",
+    duration: "4 mos",
+    location: "Daska, Punjab, Pakistan",
+    locationType: "On-site",
+    bullets: [
+      "Developed an internal MERN-stack inventory and order management system to automate manual stock tracking and operational workflows.",
+      "Implemented a QR-based inventory workflow for machinery and inventory batches, enabling faster stock movement tracking and checkout handling.",
+      "Built responsive admin dashboards, sales summaries, stock alerts, and activity monitoring interfaces to improve inventory visibility and reporting.",
+      "Developed frontend interfaces, backend APIs, and database workflows while collaborating with management to identify and resolve operational inefficiencies.",
+    ],
+    skills: [
+      "Full-Stack Development",
+      "JavaScript",
+      "React.js",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "REST APIs",
+      "Admin Dashboards",
+      "QR Code Workflows",
+      "Inventory Systems",
+      "Workflow Automation",
+    ],
+    logo: sobyLogo,
+  },
   {
     id: "systems-limited",
     role: "Intern",

@@ -177,7 +177,7 @@ export function Navbar() {
                         </Button>
 
                         {/* Desktop: direct download */}
-                        <a href="/cv-adan-ghuman.pdf" download="cv-adan-ghuman.pdf" className="hidden sm:flex">
+                        <a href="/Muhammad_Adan_Ghuman.pdf" download="Muhammad_Adan_Ghuman.pdf" className="hidden sm:flex">
                             <Button
                                 variant="primary"
                                 size="md"
@@ -199,7 +199,7 @@ export function Navbar() {
                                 Tap again to download
                             </div>
                             {/* Hidden real download anchor */}
-                            <a ref={cvLinkRef} href="/cv-adan-ghuman.pdf" download="cv-adan-ghuman.pdf" className="hidden" />
+                            <a ref={cvLinkRef} href="/Muhammad_Adan_Ghuman.pdf" download="Muhammad_Adan_Ghuman.pdf" className="hidden" />
                             <button
                                 onClick={() => {
                                     if (cvExpanded) {
